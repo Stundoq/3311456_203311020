@@ -1,4 +1,4 @@
-import 'package:ders_proje/sonuc_sayfasi.dart';
+import 'package:ders_proje/screens/sonuc_sayfasi.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -309,7 +309,7 @@ class _YasamBeklentisiState extends State<YasamBeklentisi> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SonucSayfasi()),);
+                MaterialPageRoute(builder: (context) => SonucSayfasi(seciliCinsiyet: seciliCinsiyet,kilo: kilo,boy: boy,icilenSigara: icilenSigara,sporGunu: sporGunu,)),);
             },
             child: Text('HESAPLA',
               style: TextStyle(

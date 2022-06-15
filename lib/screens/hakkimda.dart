@@ -15,13 +15,9 @@ class Hakkimda extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(
-                  height: 10,
-                ),
                 CircleAvatar(
-                  radius: 80.0,
+                  radius: 90.0,
                   backgroundColor: Colors.blue,
-                  backgroundImage: AssetImage('assets/pcmr.jpg'),
                 ),
                 SizedBox(
                   height: 15,

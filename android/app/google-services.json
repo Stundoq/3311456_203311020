@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "489795118019",
+    "project_id": "ders-proje-467e0",
+    "storage_bucket": "ders-proje-467e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489795118019:android:84ad9ebb53957f19861376",
+        "android_client_info": {
+          "package_name": "com.example.ders_proje"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "489795118019-tlq8540ngoutievqq8jbdlv85hmsqb63.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYKBBE8s0pX3_XIeuj-A7oq8hZqNx0Rmo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "489795118019-tlq8540ngoutievqq8jbdlv85hmsqb63.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,10 @@
-import 'package:ders_proje/ana_sayfa.dart';
+import 'package:ders_proje/screens/ana_sayfa.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'ana_sayfa.dart';
 
 class GirisEkrani extends StatefulWidget {
   const GirisEkrani({Key? key}) : super(key: key);
@@ -10,8 +14,42 @@ class GirisEkrani extends StatefulWidget {
 }
 
 class _GirisEkraniState extends State<GirisEkrani> {
-  String? username;
-  String? password;
+  late FirebaseAuth auth;
+  final emailCont = TextEditingController();
+  final passwdCont = TextEditingController();
+
+  @override
+  void initState() {
+    auth = FirebaseAuth.instance;
+    super.initState();
+  }
+
+  void loginUserEmailAndPassword() async {
+
+      var _userCredential = await auth.signInWithEmailAndPassword(
+          email: emailCont.text, password: passwdCont.text);
+      debugPrint(_userCredential.toString());
+  }
+
+  void googleIleGiris() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AnaSayfa()),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +62,7 @@ class _GirisEkraniState extends State<GirisEkrani> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
+                controller: emailCont,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.lightBlue),
@@ -32,21 +71,13 @@ class _GirisEkraniState extends State<GirisEkrani> {
                   labelStyle: TextStyle(color: Colors.lightBlue),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Kullanıcı Adınızı Giriniz';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (value) {
-                  username = value;
-                },
               ),
               SizedBox(
                 height: 10.0,
               ),
               TextFormField(
+                controller: passwdCont,
+                obscureText: true,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.lightBlue),
@@ -55,16 +86,6 @@ class _GirisEkraniState extends State<GirisEkrani> {
                   labelStyle: TextStyle(color: Colors.lightBlue),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Şifrenizi Giriniz';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (value) {
-                  username = value;
-                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,14 +95,20 @@ class _GirisEkraniState extends State<GirisEkrani> {
                       'Üye Ol',
                       style: TextStyle(color: Colors.lightBlue),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      FirebaseAuth.instance.createUserWithEmailAndPassword(
+                          email: emailCont.text, password: passwdCont.text);
+                    },
                   ),
                   MaterialButton(
                     child: Text(
                       'Şifremi Unuttum',
                       style: TextStyle(color: Colors.lightBlue),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      FirebaseAuth.instance
+                          .sendPasswordResetEmail(email: emailCont.text);
+                    },
                   ),
                 ],
               ),
@@ -90,11 +117,21 @@ class _GirisEkraniState extends State<GirisEkrani> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const AnaSayfa()),);
+                      loginUserEmailAndPassword();
                     },
                     child: Text('Giriş Yap'),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      googleIleGiris();
+                    },
+                    label: Text('Google İle Giriş Yap'),
+                    icon: FaIcon(FontAwesomeIcons.google),
                   ),
                 ],
               ),
